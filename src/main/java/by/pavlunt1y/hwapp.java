@@ -18,7 +18,7 @@ public class hwapp {
     public static void main(String[] args) throws Exception {
 //        registrationTest(3);
 //        loginTest(3);
-        addToCart(1);
+        addToCart(5);
     }
 
     public static void registrationTest(int repeats) {
@@ -97,7 +97,6 @@ public class hwapp {
             d.findElement(By.xpath("//a[@class=\"action showcart\"]")).click();
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@id=\"top-cart-btn-checkout\"]"))).click();
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"tooltip\"]")));
-//            new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable (By.xpath("//input[@id=\"customer-email\"")));
             d.findElement(By.xpath("//input[@id=\"customer-email\"]")).sendKeys(Util.generateEmail());
             new Select(d.findElement(By.xpath("//*[@name=\"country_id\"]"))).selectByValue("US");
             new Select(d.findElement(By.xpath("//*[@name=\"region_id\"]"))).selectByValue("1");
@@ -109,9 +108,10 @@ public class hwapp {
             d.findElement(By.xpath("//input[@name=\"telephone\"]")).sendKeys("+1239450229");
             d.findElement(By.xpath("//div[@id=\"checkout-shipping-method-load\"]/table/tbody/tr")).click();
             d.findElement(By.xpath("//div[@id=\"shipping-method-buttons-container\"]/div")).click();
-//            d.findElement(By.xpath("//button[@class=\"action primary checkout\"]")).click();
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"action action-edit\"]")));
-            d.findElement(By.xpath("//*[@class=\"action primary checkout\"]")).click();
+            //с кривыми сайтами кривыми способами(
+            new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.invisibilityOf (d.findElement(By.xpath("//div[@class=\"loading-mask\"]"))));
+            new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"action primary checkout\"]"))).click();
 //            d.quit();
         }
     }
