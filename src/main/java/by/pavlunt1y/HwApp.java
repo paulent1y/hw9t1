@@ -16,9 +16,23 @@ import java.util.concurrent.TimeUnit;
 
 public class HwApp {
     public static void main(String[] args) throws Exception {
-        registrationTest(1);
-        loginTest(1);
-        addToCart(1);
+        //как и было
+        //проход регистрации. Если регистрация успешная, пароль и мыло дописываются в csv
+//        registrationTest(1);
+
+        //берет логин и пароль и файла существующих, логинится
+//        loginTest(1);
+
+        //В очень тормозном магазине заказывает случайную футболку, оформляет доставку
+//        addToCart(1);
+
+        //на настоящем сайте добавляет в сравнение два телефона и выводит в консоль текст сравнения
+        //сайт будто может включать разный layout, поэтому там подстройка под два варианта
+        compareProducts(4);
+
+        //прогоны по последним двум магазинам нестабильны.
+        // По какой то причине в некоторых случаях может просто отказаться искаться элемент.
+        // Делать это все без junit - страдания
     }
 
     public static void registrationTest(int repeats) {
@@ -109,9 +123,38 @@ public class HwApp {
             d.findElement(By.xpath("//div[@id=\"checkout-shipping-method-load\"]/table/tbody/tr")).click();
             d.findElement(By.xpath("//div[@id=\"shipping-method-buttons-container\"]/div")).click();
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class=\"action action-edit\"]")));
-            //с кривыми сайтами кривыми способами(
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.invisibilityOf (d.findElement(By.xpath("//div[@class=\"loading-mask\"]"))));
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"action primary checkout\"]"))).click();
+            d.close();
+            d.quit();
+        }
+    }
+    public static void compareProducts(int repeats) {
+        for (int i = 0; i < repeats; i++) {
+            ChromeDriver d = new ChromeDriver();
+            d.manage().window().maximize();
+            d.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+            d.get("https://www.euro.com.pl/telefony-komorkowe,_Samsung,d6.bhtml");
+            d.findElement(By.xpath("//button[@id=\"onetrust-accept-btn-handler\"]")).click();
+
+            String compareButtonXpath = "";
+            if (!d.findElements(By.xpath("//ul[@class=\"community-list\"]/li/a")).isEmpty())
+                compareButtonXpath = "//ul[@class=\"community-list\"]/li/a";
+            else if (!d.findElements(By.xpath("//div[@class=\"box-medium__content\"]/div/a")).isEmpty()) {
+                compareButtonXpath = "//div[@class=\"box-medium__content\"]/div/a";
+            }
+
+//            d.findElements(By.xpath("//div[@class=\"box-medium__content\"]/div/a")).get(0).click();
+            d.findElements(By.xpath(compareButtonXpath)).get(0).click();
+            d.get("https://www.euro.com.pl/telefony-komorkowe,_xiaomi,d6.bhtml");
+            d.findElements(By.xpath(compareButtonXpath)).get(0).click();
+            d.findElements(By.xpath("//div[@id=\"compare-products\"]/a")).get(0).click();
+
+            List<WebElement> l = d.findElements(By.xpath("//div[@class=\"row-attr row-dif\"]"));
+            l.forEach(a-> {
+                String val=a.getAttribute("innerText");
+//                System.out.println(val);
+            });
             d.close();
             d.quit();
         }
