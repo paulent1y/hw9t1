@@ -27,12 +27,15 @@ public class HwApp {
 //        addToCart(1);
 
         //на настоящем сайте добавляет в сравнение два телефона и выводит в консоль текст сравнения
-        //сайт будто может включать разный layout, поэтому там подстройка под два варианта
         compareProducts(4);
 
         //прогоны по последним двум магазинам нестабильны.
-        // По какой то причине в некоторых случаях может просто отказаться искаться элемент.
+        // Последний сайт умеет на одном размере экрана выдавать разный layout,
+        // поэтому там попытка подстроиться под два варианта
+        // Но все равно по какой то причине в некоторых случаях может просто отказаться искаться элемент.
         // Делать это все без junit - страдания
+        // И из того что я понял - UI тесты тоже лучше раскидывать по классам.
+        // А сейчас это выглядит безобразно и беспорядочно
     }
 
     public static void registrationTest(int repeats) {
@@ -144,7 +147,6 @@ public class HwApp {
                 compareButtonXpath = "//div[@class=\"box-medium__content\"]/div/a";
             }
 
-//            d.findElements(By.xpath("//div[@class=\"box-medium__content\"]/div/a")).get(0).click();
             d.findElements(By.xpath(compareButtonXpath)).get(0).click();
             d.get("https://www.euro.com.pl/telefony-komorkowe,_xiaomi,d6.bhtml");
             d.findElements(By.xpath(compareButtonXpath)).get(0).click();
@@ -153,7 +155,7 @@ public class HwApp {
             List<WebElement> l = d.findElements(By.xpath("//div[@class=\"row-attr row-dif\"]"));
             l.forEach(a-> {
                 String val=a.getAttribute("innerText");
-//                System.out.println(val);
+                System.out.println(val);
             });
             d.close();
             d.quit();
