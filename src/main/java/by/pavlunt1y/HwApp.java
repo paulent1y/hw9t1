@@ -14,11 +14,11 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
-public class hwapp {
+public class HwApp {
     public static void main(String[] args) throws Exception {
-//        registrationTest(3);
-//        loginTest(3);
-        addToCart(5);
+        registrationTest(1);
+        loginTest(1);
+        addToCart(1);
     }
 
     public static void registrationTest(int repeats) {
@@ -112,7 +112,8 @@ public class hwapp {
             //с кривыми сайтами кривыми способами(
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.invisibilityOf (d.findElement(By.xpath("//div[@class=\"loading-mask\"]"))));
             new WebDriverWait(d, Duration.ofSeconds(10)).until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class=\"action primary checkout\"]"))).click();
-//            d.quit();
+            d.close();
+            d.quit();
         }
     }
 
